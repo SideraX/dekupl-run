@@ -40,7 +40,15 @@ script:
   - snakemake --configfile tests/config_ttest.json
   - snakemake --configfile tests/config_deseq2.json
 deploy:
-  provider: script
-  script: bash scripts/delivery.sh
-  on:
-    branch: master
+  # deploy docker
+  - provider: script
+    script: bash scripts/delivery-docker.sh
+    on:
+      tags: true
+      branch: master
+  # deploy conda
+  - provider: script
+    script: bash scripts/delivery-conda.sh
+    on:
+      # tags: true
+      branch: master
