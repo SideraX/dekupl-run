@@ -18,11 +18,12 @@ delivery-conda:
     - conda config --add channels defaults
     - conda config --add channels r
     - conda config --add channels bioconda
-    - conda create -q -n build anaconda-client conda-build
+    - conda create -n build anaconda-client conda-build
     - conda info -a
     - conda build -n build recipe
 
 delivery-docker:
+  image: docker:latest
   stage: deploy
   script:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
