@@ -10,7 +10,7 @@ variables:
 #     - snakemake --configfile tests/config_deseq2.json
 
 delivery-conda:
-  image: continuumio/miniconda3:5.3.0
+  image: continuumio/miniconda3:4.5.11
   stage: deploy
   script:
     - apt-get update -q -y
