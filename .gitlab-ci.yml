@@ -10,17 +10,20 @@ variables:
 #     - snakemake --configfile tests/config_deseq2.json
 
 delivery-conda:
-  image: continuumio/anaconda3:5.3.0
+  image: continuumio/miniconda3:5.3.0
   stage: deploy
   script:
     - apt-get update -q -y
     - apt-get install -y build-essential
     - conda config --set always_yes yes --set changeps1 no
+    - conda config --add default_channels https://repo.anaconda.com/pkgs/pro
+    - conda config --add default_channels https://repo.anaconda.com/pkgs/free
+    - conda config --add default_channels https://repo.anaconda.com/pkgs/main
     - conda config --add channels conda-forge
     - conda config --add channels defaults
     - conda config --add channels bioconda
     - conda config --add pinned_packages 'r-base >=3.4'
-    - conda create -n build anaconda-client conda-build
+    - conda create -n build anaconda-client conda-build ncurses
     - source activate build
     - conda info -a
     - conda build recipe
