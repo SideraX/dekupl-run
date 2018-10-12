@@ -13,7 +13,6 @@ delivery-conda:
   image: continuumio/miniconda3:4.5.11
   stage: deploy
   only:
-    - master
     - tags
   script:
     - apt-get update -q -y
@@ -36,7 +35,6 @@ delivery-docker:
     - docker:dind
   stage: deploy
   only:
-    - master
     - tags
   script:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
