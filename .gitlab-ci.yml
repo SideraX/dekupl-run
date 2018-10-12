@@ -29,6 +29,6 @@ delivery-docker:
     - docker:dind
   stage: deploy
   script:
-    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD registry.example.com
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker build -t transipedia/dekupl-run:test -t transipedia/dekupl-run:$CI_COMMIT_REF_NAME .
     - docker push transipedia/dekupl-run:test
