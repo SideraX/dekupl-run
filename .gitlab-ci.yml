@@ -10,7 +10,7 @@ variables:
 #     - snakemake --configfile tests/config_deseq2.json
 
 delivery-conda:
-  image: continuumio/miniconda3:4.5.11
+  image: continuumio/anaconda3:5.3.0
   stage: deploy
   script:
     - apt-get update -q -y
@@ -25,12 +25,12 @@ delivery-conda:
     - conda info -a
     - conda build recipe
 
-delivery-docker:
-  image: docker:latest
-  services:
-    - docker:dind
-  stage: deploy
-  script:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker build --pull --cache-from  transipedia/dekupl-run:test  -t transipedia/dekupl-run:test . #-t transipedia/dekupl-run:$CI_COMMIT_REF_NAME
-    - docker push transipedia/dekupl-run:test
+# delivery-docker:
+#   image: docker:latest
+#   services:
+#     - docker:dind
+#   stage: deploy
+#   script:
+#     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+#     - docker build --pull --cache-from  transipedia/dekupl-run:test  -t transipedia/dekupl-run:test . #-t transipedia/dekupl-run:$CI_COMMIT_REF_NAME
+#     - docker push transipedia/dekupl-run:test
