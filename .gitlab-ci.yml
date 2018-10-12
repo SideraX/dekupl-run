@@ -15,7 +15,17 @@ delivery-conda:
   script:
     - conda config --set always_yes yes --set changeps1 no
     - conda config --add channels conda-forge
+    - conda config --add channels defaults
+    - conda config --add channels r
     - conda config --add channels bioconda
     - conda install anaconda-client conda-build
     - conda info -a
     - conda build recipe
+
+delivery-docker:
+  image: continuumio/miniconda3:4.5.11
+  stage: deploy
+  script:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker build -t transipedia/dekupl-run:test -t transipedia/dekupl-run:$CI_COMMIT_REF_NAME .
+    - docker push transipedia/dekupl-run:test
