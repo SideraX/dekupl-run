@@ -24,13 +24,11 @@ delivery-conda:
     - conda build recipe
 
 delivery-docker:
-  before_script:
-    - docker pull transipedia/dekupl-run:test
   image: docker:latest
   services:
     - docker:dind
   stage: deploy
   script:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    - docker build --pull -t transipedia/dekupl-run:test . #-t transipedia/dekupl-run:$CI_COMMIT_REF_NAME
+    - docker build --pull --cache-from  transipedia/dekupl-run:test  -t transipedia/dekupl-run:test . #-t transipedia/dekupl-run:$CI_COMMIT_REF_NAME
     - docker push transipedia/dekupl-run:test
