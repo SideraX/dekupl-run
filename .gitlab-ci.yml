@@ -17,12 +17,15 @@ delivery-conda:
     - conda config --add channels conda-forge
     - conda config --add channels defaults
     - conda config --add channels bioconda
+    - conda config --add pinned_packages 'r-base >=3.4'
     - conda create -n build anaconda-client conda-build
     - source activate build
     - conda info -a
     - conda build recipe
 
 delivery-docker:
+  before_script:
+    - docker pull transipedia/dekupl-run:test
   image: docker:latest
   services:
     - docker:dind
