@@ -19,13 +19,16 @@ delivery-conda:
     - conda config --add channels r
     - conda config --add channels bioconda
     - conda create -n build anaconda-client conda-build
+    - source activate build
     - conda info -a
-    - conda build -n build recipe
+    - conda build recipe
 
 delivery-docker:
   image: docker:latest
+  services:
+    - docker:dind
   stage: deploy
   script:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD registry.example.com
     - docker build -t transipedia/dekupl-run:test -t transipedia/dekupl-run:$CI_COMMIT_REF_NAME .
     - docker push transipedia/dekupl-run:test
