@@ -14,7 +14,7 @@ delivery-conda:
   stage: deploy
   script:
     - apt-get update -q -y
-    - apt-get install -y build-essential
+    - apt-get install -y build-essential zlibc zlib1g zlib1g-dev
     - conda config --set always_yes yes --set changeps1 no
     - conda config --add default_channels https://repo.anaconda.com/pkgs/pro
     - conda config --add default_channels https://repo.anaconda.com/pkgs/free
@@ -22,8 +22,7 @@ delivery-conda:
     - conda config --add channels conda-forge
     - conda config --add channels defaults
     - conda config --add channels bioconda
-    - conda config --add pinned_packages 'r-base >=3.4'
-    - conda create -n build anaconda-client conda-build ncurses
+    - conda create -n build anaconda-client conda-build
     - source activate build
     - conda info -a
     - conda build recipe
