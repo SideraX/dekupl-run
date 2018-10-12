@@ -18,12 +18,11 @@ delivery-conda:
     - conda config --add channels defaults
     - conda config --add channels r
     - conda config --add channels bioconda
-    - conda install anaconda-client conda-build
+    - conda create -q -n build anaconda-client conda-build
     - conda info -a
-    - conda build recipe
+    - conda build -n build recipe
 
 delivery-docker:
-  image: continuumio/miniconda3:4.5.11
   stage: deploy
   script:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
