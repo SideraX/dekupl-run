@@ -1,20 +1,20 @@
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
 
-# test:
-#   image: registry.gitlab.com/siderax/dekupl-run:ci
-#   stage: test
-#   script:
-#     - snakemake --configfile tests/config_transcript_to_gene_mapping.json
-#     - snakemake --configfile tests/config_ttest.json
-#     - snakemake --configfile tests/config_deseq2.json
+test:
+  image: registry.gitlab.com/siderax/dekupl-run:ci
+  stage: test
+  script:
+    - snakemake --configfile tests/config_transcript_to_gene_mapping.json
+    - snakemake --configfile tests/config_ttest.json
+    - snakemake --configfile tests/config_deseq2.json
 
 delivery-conda:
   image: continuumio/miniconda3:4.5.11
   stage: deploy
-  # only:
-  #   - master
-  #   - tags
+  only:
+    - master
+    - tags
   script:
     - apt-get update -q -y
     - apt-get install -y build-essential
@@ -30,12 +30,15 @@ delivery-conda:
     - conda info -a
     - conda build --user transipedia --token $ANACONDA_TOKEN recipe
 
-# delivery-docker:
-#   image: docker:latest
-#   services:
-#     - docker:dind
-#   stage: deploy
-#   script:
-#     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-#     - docker build --pull --cache-from  transipedia/dekupl-run:test  -t transipedia/dekupl-run:test . #-t transipedia/dekupl-run:$CI_COMMIT_REF_NAME
-#     - docker push transipedia/dekupl-run:test
+delivery-docker:
+  image: docker:latest
+  services:
+    - docker:dind
+  stage: deploy
+  only:
+    - master
+    - tags
+  script:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+    - docker build --pull --cache-from  transipedia/dekupl-run  -t transipedia/dekupl-run -t transipedia/dekupl-run:$CI_COMMIT_REF_NAME .
+    - docker push transipedia/dekupl-run
