@@ -14,10 +14,10 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
-    - cmake
 
   host:
     - boost
+    - cmake
     - zlib
 
   run:

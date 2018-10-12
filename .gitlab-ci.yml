@@ -16,6 +16,8 @@ delivery-conda:
   #   - master
   #   - tags
   script:
+    - apt-get update -q -y
+    - apt-get install -y build-essential
     - conda config --set always_yes yes --set changeps1 no
     - conda config --add default_channels https://repo.anaconda.com/pkgs/pro
     - conda config --add default_channels https://repo.anaconda.com/pkgs/free
